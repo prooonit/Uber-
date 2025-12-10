@@ -1,0 +1,17 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthUserController;
+use App\Http\Controllers\AuthDriverController;
+
+Route::prefix('user')->group(function () {
+    Route::post('/register',[AuthUserController::class,'register']);
+    Route::post('/login',[AuthUserController::class,'login']);
+   
+});
+Route::prefix('driver')->group(function () {
+    Route::post('/register',[AuthDriverController::class,'register']);
+    Route::post('/login',[AuthDriverController::class,'login']);
+
+});

@@ -97,4 +97,31 @@ class DriverLocationController extends Controller
 
         return $distance; 
     }
+
+    public function requestRide(Request $request)
+    {
+        $payload = [
+            'user_id' => $request->input('user_id'),
+            'pickup_lat' => $request->input('pickup_lat'),
+            'pickup_lng' => $request->input('pickup_lng'),
+            'dropoff_lat' => $request->input('dropoff_lat'),
+            'dropoff_lng' => $request->input('dropoff_lng'),
+        ];
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ])->post(config('services.ride_service.url').'/ride/allocation', $payload);
+
+        if ($response->failed()) {
+            return response()->json([
+                'message' => 'Failed to request ride',
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ride requested successfully',
+            'data' => $response->json()
+        ]);
+    }
 }
